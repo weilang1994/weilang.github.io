@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这段代码作用是动态生成一个“我为网站找错”图标，点击后跳转到报错网页，并把当前网页的url提交过去。1234567891011121314151617181920212223242526272829303132333435//在页面增加一个放置图标的区块if(document.getElementById(&apos;_span_jiucuo&apos;) === null)	document.write(&quot;&amp;lt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="window.location和URI编码">
+<meta property="og:url" content="http://zhouweilang.com/2018/04/15/window.location和URI编码/index.html">
+<meta property="og:site_name" content="偉朗的部落格">
+<meta property="og:description" content="这段代码作用是动态生成一个“我为网站找错”图标，点击后跳转到报错网页，并把当前网页的url提交过去。1234567891011121314151617181920212223242526272829303132333435//在页面增加一个放置图标的区块if(document.getElementById(&apos;_span_jiucuo&apos;) === null)	document.write(&quot;&amp;lt;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-14T17:35:48.181Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="window.location和URI编码">
+<meta name="twitter:description" content="这段代码作用是动态生成一个“我为网站找错”图标，点击后跳转到报错网页，并把当前网页的url提交过去。1234567891011121314151617181920212223242526272829303132333435//在页面增加一个放置图标的区块if(document.getElementById(&apos;_span_jiucuo&apos;) === null)	document.write(&quot;&amp;lt;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhouweilang.com/2018/04/15/window.location和URI编码/"/>
+
+
+
+
+
+  <title>window.location和URI编码 | 偉朗的部落格</title>
+  
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="http://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>
+	<script type="text/javascript">
+	   $youziku.load("body,.post-title", "5eec4948fe4044d78547dfab5080811d", "TSSunOld");
+	   $youziku.load(".post-body", "028835d354514b7e982deb784c56ef7b", "Source-Han-Light");
+		$youziku.load(".site-title", "f085fcb8164d469cabac3ffd6d8530d4", "HanWangT0007");
+	   $youziku.draw();
+	</script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">偉朗的部落格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">摄影爱好者而已</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有日志
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhouweilang.com/2018/04/15/window.location和URI编码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="偉朗的部落格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">window.location和URI编码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T00:58:44+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这段代码作用是动态生成一个“我为网站找错”图标，点击后跳转到报错网页，并把当前网页的url提交过去。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在页面增加一个放置图标的区块</span></span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">document</span>.getElementById(<span class="string">'_span_jiucuo'</span>) === <span class="literal">null</span>)</span><br><span class="line">	<span class="built_in">document</span>.write(<span class="string">"&lt;span id='_span_jiucuo'&gt;&lt;/span&gt;"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取放置图标的区块</span></span><br><span class="line"><span class="keyword">var</span> span_msg = <span class="built_in">document</span>.getElementById(<span class="string">"_span_jiucuo"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取站点标识码</span></span><br><span class="line"><span class="keyword">var</span> sitecode = <span class="built_in">document</span>.getElementById(<span class="string">"_jiucuo_"</span>).attributes[<span class="string">"sitecode"</span>].value;</span><br><span class="line"></span><br><span class="line"><span class="comment">//生成纠错图标及点击链接</span></span><br><span class="line">span_msg.innerHTML = <span class="string">"&lt;img onclick=\"Link('"</span> + sitecode + <span class="string">"')\" style='margin:0;border:0;cursor: pointer;' src='http://121.43.68.40/exposure/images/jiucuo.png?v="</span>+sitecode+<span class="string">"'/&gt;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//点击图标</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Link</span>(<span class="params">site_code</span>) </span>&#123;</span><br><span class="line">	<span class="comment">//获取该站点需要纠错页面的url地址</span></span><br><span class="line">	<span class="keyword">var</span> url = getCurrUrl();</span><br><span class="line">	<span class="comment">//跳转至纠错系统填写页面 </span></span><br><span class="line">	<span class="built_in">window</span>.open(<span class="string">"http://121.43.68.40/exposure/jiucuo.html?site_code="</span> + site_code + <span class="string">"&amp;url="</span> + <span class="built_in">encodeURIComponent</span>(url));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//获取该站点需要纠错页面的url地址</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getCurrUrl</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> url = <span class="string">""</span>;</span><br><span class="line">	<span class="keyword">if</span> (parent !== <span class="built_in">window</span>) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			url = <span class="built_in">window</span>.top.location.href;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">			url = <span class="built_in">window</span>.top.document.referrer;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (url.length == <span class="number">0</span>)</span><br><span class="line">		url = <span class="built_in">document</span>.location.href;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>疑问点</p>
+<blockquote>
+<ul>
+<li>URI编码方法encodeURIComponent（）</li>
+<li>window.top.location.href里 <code>top</code> 的作用</li>
+<li>window.top.document.referrer里 <code>referrer</code> 是什么意思</li>
+<li>try-catch的用法</li>
+</ul>
+</blockquote>
+<h2 id="1-URI编码方法"><a href="#1-URI编码方法" class="headerlink" title="1. URI编码方法"></a>1. URI编码方法</h2><p>&emsp;&emsp;Global 对象的 <code>encodeURI()</code> 和 <code>encodeURIComponent()</code> 方法可以对 URI（Uniform Resource Identifiers，通用资源标识符）进行编码，以便发送给浏览器。有效的 URI 中不能包含某些字符，例如空格。而这两个 URI 编码方法就可以对 URI进行编码，它们用特殊的 UTF-8 编码替换所有无效的字符，从而让浏览器能够接受和理解。<br>&emsp;&emsp;其中， <code>encodeURI()</code> 主要用于整个 URI（例如，<a href="http://www.wrox.com/illegal" target="_blank" rel="noopener">http://www.wrox.com/illegal</a> value.htm），而 <code>encodeURIComponent()</code> 主要用于对 URI 中的某一段（例如前面 URI 中的 illegal value.htm ）进行编码。它们的主要区别在于， <code>encodeURI()</code> 不会对本身属于 URI 的特殊字符进行编码，例如冒号、正斜杠、问号和井字号；而 <code>encodeURIComponent()</code>则会对它发现的任何非标准字符进行编码。来看下面的例子。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> uri = <span class="string">"http://www.wrox.com/illegal value.htm#start"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//"http://www.wrox.com/illegal%20value.htm#start"</span></span><br><span class="line">alert(<span class="built_in">encodeURI</span>(uri));</span><br><span class="line"></span><br><span class="line"><span class="comment">//"http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.htm%23start"</span></span><br><span class="line">alert(<span class="built_in">encodeURIComponent</span>(uri));</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>一 般 来 说 ， 我 们 使 用 <code>encodeURIComponent()</code> 方 法 的 时 候 要 比 使 用<code>encodeURI()</code> 更多，因为在实践中更常见的是对查询字符串参数而不是对基础 URI进行编码。</p>
+</blockquote>
+<p>&emsp;&emsp;与 <code>encodeURI()</code> 和 <code>encodeURIComponent()</code> 方法对应的两个方法分别是 <code>decodeURI()</code> 和<code>decodeURIComponent()</code> 。其中， <code>decodeURI()</code> 只能对使用 <code>encodeURI()</code> 替换的字符进行解码。例如，它可将 %20 替换成一个空格，但不会对 %23 作任何处理，因为 %23 表示井字号（ # ），而井字号不是使用<code>encodeURI()</code> 替换的。同样地， <code>decodeURIComponent()</code> 能够解码使用 <code>encodeURIComponent()</code> 编码的所有字符，即它可以解码任何特殊字符的编码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> uri = <span class="string">"http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.htm%23start"</span>;</span><br><span class="line"><span class="comment">//http%3A%2F%2Fwww.wrox.com%2Fillegal value.htm%23start</span></span><br><span class="line">alert(<span class="built_in">decodeURI</span>(uri));</span><br><span class="line"><span class="comment">//http://www.wrox.com/illegal value.htm#start</span></span><br><span class="line">alert(<span class="built_in">decodeURIComponent</span>(uri));</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-window对象"><a href="#2-window对象" class="headerlink" title="2.window对象"></a>2.window对象</h2><p>&emsp;&emsp;BOM（浏览器对象模型）的核心对象是 <code>window</code> ，它表示浏览器的一个实例。在浏览器中， <code>window</code> 对象有双重角色，它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 <code>Global</code> 对象。这意味着在网页中定义的任何一个对象、变量和函数，都以 window 作为其 Global 对象，因此有权访问<code>parseInt()</code> 等方法。<br>&emsp;&emsp;如果页面中包含框架，则每个框架都拥有自己的 <code>window</code> 对象，并且保存在 <code>frames</code> 集合中。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (parent !== <span class="built_in">window</span>) &#123; <span class="comment">//判断如果有框架 </span></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		url = <span class="built_in">window</span>.top.location.href;<span class="comment">//浏览器窗口的URL</span></span><br><span class="line">	&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">		url = <span class="built_in">window</span>.top.document.referrer; <span class="comment">//获取上一访问页面URL地址</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (url.length == <span class="number">0</span>)</span><br><span class="line">	url = <span class="built_in">document</span>.location.href;	<span class="comment">//如果上文获取不到页面的URL，就获取框架的URL</span></span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;我们知道， <code>top</code> 对象始终指向最高（最外）层的框架，也就是浏览器窗口。<br>&emsp;&emsp;与 <code>top</code> 相对的另一个 <code>window</code> 对象是 <code>parent</code> 。顾名思义， <code>parent</code> （父）对象始终指向当前框架的直接上层框架。在某些情况下， <code>parent</code> 有可能等于 <code>top</code> ；但在没有框架的情况下， <code>parent</code> 一定等于top （此时它们都等于 <code>window</code> ）。  </p>
+<blockquote>
+<p>无框架：简单的说，<code>window.location</code>和<code>document.location</code>没有框架的情况下，是等同的<br>有框架：在有框架的情况下，最外层是相同的，在iframe里面的<code>window.location</code>和<code>document.location</code>是不同的。 </p>
+</blockquote>
+<h3 id="补充知识点"><a href="#补充知识点" class="headerlink" title="补充知识点"></a>补充知识点</h3><ul>
+<li><code>document.location.href</code>和<code>document.location.replace()</code>都可以实现从A页面切换到B页面，但他们的区别是： 用<code>document.location.href</code>切换后，可以通过<code>history.go(-1)</code>或者<code>history.back()</code>退回到原页面。而用<code>document.location.replace</code>切换后，不可以通过“后退”退回到原页面。  </li>
+<li>document.referrer获取前一个访问页面的URL地址，相关链接：<a href="http://www.zhangxinxu.com/wordpress/2017/02/js-page-url-document-referrer/" target="_blank" rel="noopener">张鑫旭document.referrer实践</a> </li>
+</ul>
+<h2 id="3-try-catch语句"><a href="#3-try-catch语句" class="headerlink" title="3.try-catch语句"></a>3.try-catch语句</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"><span class="comment">// 可能会导致错误的代码</span></span><br><span class="line">&#125; <span class="keyword">catch</span>(error)&#123;</span><br><span class="line"><span class="comment">// 在错误发生时怎么处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="错误类型"><a href="#错误类型" class="headerlink" title="错误类型"></a>错误类型</h3><ul>
+<li>Error（基类型，其他错误类型都继承自该类型，这个基类型的主要目的是供开发人员抛出自定义错误。）</li>
+<li>EvalError（使用 eval() 函数而发生异常时被抛出。）</li>
+<li>URIError（在使用 encodeURI() 或 decodeURI() ，而 URI 格式不正确时）</li>
+<li>SyntaxError（把语法错误的 JavaScript 字符串传入 eval() 函数时触发）</li>
+<li>RangeError（在数值超出相应范围时触发。）</li>
+<li><strong> ReferenceError（在找不到对象的情况下触发。）</strong></li>
+<li><strong> TypeError（在变量中保存着意外的类型时，或者在访问不存在的方法时）</strong></li>
+</ul>
+<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3><p>与 <code>try-catch</code> 语句相配的还有一个 <code>throw</code> 操作符，用于随时抛出自定义错误。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Something bad happened."</span>);</span><br></pre></td></tr></table></figure></p>
+<p>在遇到 <code>throw</code> 操作符时，代码会立即停止执行。仅当有 <code>try-catch</code> 语句捕获到被抛出的值时，代码才会继续执行。</p>
+<h3 id="finally"><a href="#finally" class="headerlink" title="finally"></a>finally</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFinally</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">	&#125; <span class="keyword">catch</span> (error)&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;<span class="comment">//返回0</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>只要代码中包含 finally 子句，那么无论 try 还是 catch 语句块<br>中的 return 语句都将被忽略。因此，在使用 finally 子句之前，一定要非常清楚你想让代<br>码怎么样。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/17/澳门游记/" rel="next" title="澳門遊記">
+                <i class="fa fa-chevron-left"></i> 澳門遊記
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="WeiLang" />
+            
+              <p class="site-author-name" itemprop="name">WeiLang</p>
+              <p class="site-description motion-element" itemprop="description">广东90后，深圳前端工作者</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/weilang1994" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/lang1994" target="_blank" title="微 博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微 博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-URI编码方法"><span class="nav-number">1.</span> <span class="nav-text">1. URI编码方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-window对象"><span class="nav-number">2.</span> <span class="nav-text">2.window对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#补充知识点"><span class="nav-number">2.1.</span> <span class="nav-text">补充知识点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-try-catch语句"><span class="nav-number">3.</span> <span class="nav-text">3.try-catch语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误类型"><span class="nav-number">3.1.</span> <span class="nav-text">错误类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#throw"><span class="nav-number">3.2.</span> <span class="nav-text">throw</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#finally"><span class="nav-number">3.3.</span> <span class="nav-text">finally</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+		
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
