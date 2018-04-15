@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1.变量 基本类型：保存变量中实际的值（ Undefined 、 Null 、 Boolean 、 Number 和 String 。） 引用类型：保存在内存中的对象。JavaScript不允许直接访问内存中的位置也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访问的。  复制变量值当从一个变量向另一个变量复制引用类型的值时，同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="变量、作用域">
+<meta property="og:url" content="http://zhouweilang.com/2018/04/15/变量、作用域/index.html">
+<meta property="og:site_name" content="偉朗的部落格">
+<meta property="og:description" content="1.变量 基本类型：保存变量中实际的值（ Undefined 、 Null 、 Boolean 、 Number 和 String 。） 引用类型：保存在内存中的对象。JavaScript不允许直接访问内存中的位置也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访问的。  复制变量值当从一个变量向另一个变量复制引用类型的值时，同">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-15T10:43:56.454Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="变量、作用域">
+<meta name="twitter:description" content="1.变量 基本类型：保存变量中实际的值（ Undefined 、 Null 、 Boolean 、 Number 和 String 。） 引用类型：保存在内存中的对象。JavaScript不允许直接访问内存中的位置也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访问的。  复制变量值当从一个变量向另一个变量复制引用类型的值时，同">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhouweilang.com/2018/04/15/变量、作用域/"/>
+
+
+
+
+
+  <title>变量、作用域 | 偉朗的部落格</title>
+  
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="http://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>
+	<script type="text/javascript">
+	   $youziku.load("body,.post-title", "5eec4948fe4044d78547dfab5080811d", "TSSunOld");
+	   $youziku.load(".post-body", "028835d354514b7e982deb784c56ef7b", "Source-Han-Light");
+		$youziku.load(".site-title", "f085fcb8164d469cabac3ffd6d8530d4", "HanWangT0007");
+	   $youziku.draw();
+	</script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">偉朗的部落格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">摄影爱好者而已</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有日志
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhouweilang.com/2018/04/15/变量、作用域/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="偉朗的部落格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">变量、作用域</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T18:28:13+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-变量"><a href="#1-变量" class="headerlink" title="1.变量"></a>1.变量</h3><ul>
+<li>基本类型：保存变量中实际的值（ Undefined 、 Null 、 Boolean 、 Number 和 String 。）</li>
+<li>引用类型：保存在内存中的对象。JavaScript不允许直接访问内存中的位置也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访问的。</li>
+</ul>
+<h4 id="复制变量值"><a href="#复制变量值" class="headerlink" title="复制变量值"></a>复制变量值</h4><p>当从一个变量向另一个变量复制引用类型的值时，同样也会将存储在变量对象中的值复制一份放到为新变量分配的空间中。不同的是，这个值的副本实际上是一个指针，而这个指针指向存储在堆中的一个对象。复制操作结束后，两个变量实际上将引用同一个对象。因此，改变其中一个变量，就会影响另一个变量，如下面的例子所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">var</span> obj2 = obj1;</span><br><span class="line">obj1.name = <span class="string">"Nicholas"</span>;</span><br><span class="line">alert(obj2.name); <span class="comment">//"Nicholas"</span></span><br></pre></td></tr></table></figure>
+  <a id="more"></a>
+<h4 id="检测类型"><a href="#检测类型" class="headerlink" title="检测类型"></a>检测类型</h4><p>要检测一个变量是不是基本数据类型？<code>typeof</code> 操作符是最佳的工具。说得更具体一点， <code>typeof</code> 操作符是确定一个变量是字符串、数值、布尔值，还是 undefined的最佳工具。如果变量的值是一个对象或 null ，则<code>typeof</code> 操作符会像下面例子中所示的那样返回 “object” ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">"Nicholas"</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> i = <span class="number">22</span>;</span><br><span class="line"><span class="keyword">var</span> u;</span><br><span class="line"><span class="keyword">var</span> n = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">alert(<span class="keyword">typeof</span> s); <span class="comment">//string</span></span><br><span class="line">alert(<span class="keyword">typeof</span> i); <span class="comment">//number</span></span><br><span class="line">alert(<span class="keyword">typeof</span> b); <span class="comment">//boolean</span></span><br><span class="line">alert(<span class="keyword">typeof</span> u); <span class="comment">//undefined</span></span><br><span class="line">alert(<span class="keyword">typeof</span> n); <span class="comment">//object</span></span><br><span class="line">alert(<span class="keyword">typeof</span> o); <span class="comment">//object</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用 typeof 操作符检测函数时，该操作符会返回 “function” 。  </p>
+</blockquote>
+<p>虽然在检测基本数据类型时 <code>typeof</code> 是非常得力的助手，但在检测引用类型的值时，这个操作符的用处不大。通常，我们并不是想知道某个值是对象，而是想知道它是什么类型的对象。为此，ECMAScript提供了 <code>instanceof</code> 操作符，其语法如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alert(person <span class="keyword">instanceof</span> <span class="built_in">Object</span>);  <span class="comment">// 变量 person 是 Object 吗？</span></span><br><span class="line">alert(colors <span class="keyword">instanceof</span> <span class="built_in">Array</span>); <span class="comment">// 变量 colors 是 Array 吗？</span></span><br><span class="line">alert(pattern <span class="keyword">instanceof</span> <span class="built_in">RegExp</span>); <span class="comment">// 变量 pattern 是 RegExp 吗？</span></span><br></pre></td></tr></table></figure>
+<p>根据规定，所有引用类型的值都是 Object 的实例。因此，在检测一个引用类型值和 Object 构造函数时，<code>instanceof</code> 操作符始终会返回 true 。当然，如果使用 <code>instanceof</code> 操作符检测基本类型的值，则该操作符始终会返回 false ，因为基本类型不是对象。</p>
+<h3 id="2-执行环境、作用域、作用域链"><a href="#2-执行环境、作用域、作用域链" class="headerlink" title="2.执行环境、作用域、作用域链"></a>2.执行环境、作用域、作用域链</h3><h4 id="执行环境"><a href="#执行环境" class="headerlink" title="执行环境"></a>执行环境</h4><p><strong>执行环境</strong>定义了变量或函数有权访问的其他数据，决定了它们各自的行为。每个执行环境都有一个与之关联的<strong>变量对象</strong>（variable object），环境中定义的所有变量和函数都保存在这个对象中。  </p>
+<p><strong>全局执行环境</strong>是最外围的一个执行环境。根据 ECMAScript 实现所在的宿主环境不同，表示执行环境的对象也不一样。在 Web 浏览器中，全局执行环境被认为是 <code>window</code> 对象，因此所有全局变量和函数都是作为 <code>window</code> 对象的属性和方法创建的。<strong>某个执行环境中的所有代码执行完毕后，该环境被销毁，保存在其中的所有变量和函数定义也随销毁</strong>（全局执行环境直到应用程序退出——例如关闭网页或浏览器——时才会被销毁）。  </p>
+<p>每个函数都有自己的<strong>执行环境</strong>。当执行流进入一个函数时，函数的环境就会被推入一个环境栈中。而在函数执行之后，栈将其环境弹出，把控制权返回给之前的执行环境。</p>
+<h4 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h4><p>当代码在一个环境中执行时，会创建变量对象的一个<strong>作用域链</strong>（scope chain）。作用域链的用途，是保证对执行环境有权访问的所有变量和函数的有序访问。作用域链的前端，始终都是当前执行的代码所在环境的变量对象。如果这个环境是函数，则将其活动对象（activation object）作为变量对象。活动对象在最开始时只包含一个变量，即 <code>arguments</code> 对象（这个对象在全局环境中是不存在的）。作用域链中的下一个变量对象来自包含（外部）环境，而再下一个变量对象则来自下一个包含环境。这样，一直延续到全局执行环境；<strong>全局执行环境的变量对象始终都是作用域链中的最后一个对象。</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> anotherColor = <span class="string">"red"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">swapColors</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> tempColor = anotherColor;</span><br><span class="line">        anotherColor = color;</span><br><span class="line">        color = tempColor;</span><br><span class="line">        <span class="comment">// 这里可以访问 color、anotherColor 和 tempColor</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 这里可以访问 color 和 anotherColor，但不能访问 tempColor</span></span><br><span class="line">    swapColors();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这里只能访问 color</span></span><br><span class="line">changeColor();</span><br></pre></td></tr></table></figure>
+<p>以上代码共涉及 3 个执行环境：<code>全局环境</code>、 <code>changeColor()</code> 的局部环境和 <code>swapColors()</code> 的局部环境。  </p>
+<ul>
+<li>全局环境中有一个变量 <code>color</code> 和一个函数 <code>changeColor()</code> 。   </li>
+<li><code>changeColor()</code> 的局部环境中有一个名为 <code>anotherColor</code> 的变量和一个名为 <code>swapColors()</code> 的函数，但它也可以访问全局环境中的变量<code>color</code> 。  </li>
+<li><code>swapColors()</code> 的局部环境中有一个变量 <code>tempColor</code> ，该变量只能在这个环境中访问到。无论全局环境还是 <code>changeColor()</code> 的局部环境都无权访问<code>tempColor</code> 。然而，在 <code>swapColors()</code> 内部则可以访问其他两个环境中的所有变量，因为那两个环境是它的父执行环境。</li>
+</ul>
+<blockquote>
+<p>内部环境可以向上搜索作用域链访问所有的外部环境，但外部环境不能通过向下搜索作用域链访问内部环境中的任何变量和函数。</p>
+</blockquote>
+<h4 id="没有块级作用域"><a href="#没有块级作用域" class="headerlink" title="没有块级作用域"></a>没有块级作用域</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line">&#125;</span><br><span class="line">alert(color); <span class="comment">//"blue"</span></span><br></pre></td></tr></table></figure>
+<p>这里是在一个 if 语句中定义了变量 color 。如果是在 C、C++或 Java中， color 会在 if 语句执行完毕后被销毁。但在 JavaScript 中， if 语句中的变量声明会将变量添加到当前的执行环境（在这里是全局环境）中。  在使用 for 语句时尤其要牢记这一差异，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; <span class="number">10</span>; i++)&#123;</span><br><span class="line">    doSomething(i);</span><br><span class="line">&#125;</span><br><span class="line">alert(i); <span class="comment">//10</span></span><br></pre></td></tr></table></figure>
+<p>由 for 语句创建的变量 i 即使在 for 循环执行结束后，也依旧会存在于循环外部的执行环境中。</p>
+<h4 id="声明变量"><a href="#声明变量" class="headerlink" title="声明变量"></a>声明变量</h4><p>如果初始化变量时没有使用 <code>var</code> 声明，该变量会自动被添加到全局环境。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = num1 + num2;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> result = add(<span class="number">10</span>, <span class="number">20</span>); <span class="comment">//30</span></span><br><span class="line">alert(sum); <span class="comment">//由于 sum 不是有效的变量，因此会导致错误</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num1, num2</span>) </span>&#123;</span><br><span class="line">    sum = num1 + num2;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> result = add(<span class="number">10</span>, <span class="number">20</span>); <span class="comment">//30</span></span><br><span class="line">alert(sum); <span class="comment">//30</span></span><br></pre></td></tr></table></figure>
+<p>调用下例中的函数 <code>getColor()</code> 时会引用变量 <code>color</code>。为了确定变量 color 的值，将开始一个两步的搜索过程。首先，搜索 getColor() 的变量对象，查找其中是否包含一个名为 color 的标识符。在没有找到的情况下，搜索继续到下一个变量对象（全局环境的变量对象），然后在那里找到了名为color 的标识符。因为搜索到了定义这个变量的变量对象，搜索过程宣告结束。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> color;</span><br><span class="line">&#125;</span><br><span class="line">alert(getColor()); <span class="comment">//"blue"</span></span><br></pre></td></tr></table></figure>
+<p>在这个搜索过程中，如果存在一个局部的变量的定义，则搜索会自动停止，不再进入另一个变量对象。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getColor</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> color = <span class="string">"red"</span>;</span><br><span class="line">    <span class="keyword">return</span> color;</span><br><span class="line">&#125;</span><br><span class="line">alert(getColor()); <span class="comment">//"red"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="3-总结"><a href="#3-总结" class="headerlink" title="3.总结"></a>3.总结</h3><p>JavaScript 变量可以用来保存两种类型的值：基本类型值和引用类型值。基本类型的值源自以下 5种基本数据类型： Undefined 、 Null 、 Boolean 、 Number 和 String 。基本类型值和引用类型值具有以下特点：</p>
+<ul>
+<li>基本类型值在内存中占据固定大小的空间，因此被保存在栈内存中；</li>
+<li>从一个变量向另一个变量复制基本类型的值，会创建这个值的一个副本；</li>
+<li>引用类型的值是对象，保存在堆内存中；</li>
+<li>包含引用类型值的变量实际上包含的并不是对象本身，而是一个指向该对象的指针；</li>
+<li>从一个变量向另一个变量复制引用类型的值，复制的其实是指针，因此两个变量最终都指向同<br>一个对象；</li>
+<li>确定一个值是哪种基本类型可以使用 typeof 操作符，而确定一个值是哪种引用类型可以使用<br>instanceof 操作符。  </li>
+</ul>
+<p>所有变量（包括基本类型和引用类型）都存在于一个执行环境（也称为作用域）当中，这个执行环境决定了变量的生命周期，以及哪一部分代码可以访问其中的变量。以下是关于执行环境的几点总结：</p>
+<ul>
+<li>执行环境有全局执行环境（也称为全局环境）和函数执行环境之分；</li>
+<li>每次进入一个新执行环境，都会创建一个用于搜索变量和函数的作用域链；</li>
+<li>函数的局部环境不仅有权访问函数作用域中的变量，而且有权访问其包含（父）环境，乃至全<br>局环境；</li>
+<li>全局环境只能访问在全局环境中定义的变量和函数，而不能直接访问局部环境中的任何数据；</li>
+<li>变量的执行环境有助于确定应该何时释放内存。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/window.location和URI编码/" rel="next" title="window.location和URI编码">
+                <i class="fa fa-chevron-left"></i> window.location和URI编码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="WeiLang" />
+            
+              <p class="site-author-name" itemprop="name">WeiLang</p>
+              <p class="site-description motion-element" itemprop="description">广东90后，深圳前端工作者</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/weilang1994" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/lang1994" target="_blank" title="微 博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微 博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-变量"><span class="nav-number">1.</span> <span class="nav-text">1.变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#复制变量值"><span class="nav-number">1.1.</span> <span class="nav-text">复制变量值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检测类型"><span class="nav-number">1.2.</span> <span class="nav-text">检测类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-执行环境、作用域、作用域链"><span class="nav-number">2.</span> <span class="nav-text">2.执行环境、作用域、作用域链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#执行环境"><span class="nav-number">2.1.</span> <span class="nav-text">执行环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用域链"><span class="nav-number">2.2.</span> <span class="nav-text">作用域链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#没有块级作用域"><span class="nav-number">2.3.</span> <span class="nav-text">没有块级作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#声明变量"><span class="nav-number">2.4.</span> <span class="nav-text">声明变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-总结"><span class="nav-number">3.</span> <span class="nav-text">3.总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+		
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
