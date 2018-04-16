@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="检测数组确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 instanceof 操作符就能得到满意的结果 123if (value instanceof Array)&amp;#123;    //对数组执行某些操作&amp;#125; instanceof 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="引用类型 - Array">
+<meta property="og:url" content="http://zhouweilang.com/2018/04/16/引用类型 - Array/index.html">
+<meta property="og:site_name" content="偉朗的部落格">
+<meta property="og:description" content="检测数组确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 instanceof 操作符就能得到满意的结果 123if (value instanceof Array)&amp;#123;    //对数组执行某些操作&amp;#125; instanceof 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-16T02:06:30.976Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="引用类型 - Array">
+<meta name="twitter:description" content="检测数组确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 instanceof 操作符就能得到满意的结果 123if (value instanceof Array)&amp;#123;    //对数组执行某些操作&amp;#125; instanceof 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhouweilang.com/2018/04/16/引用类型 - Array/"/>
+
+
+
+
+
+  <title>引用类型 - Array | 偉朗的部落格</title>
+  
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="http://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>
+	<script type="text/javascript">
+	   $youziku.load("body,.post-title", "5eec4948fe4044d78547dfab5080811d", "TSSunOld");
+	   $youziku.load(".post-body", "028835d354514b7e982deb784c56ef7b", "Source-Han-Light");
+		$youziku.load(".site-title", "f085fcb8164d469cabac3ffd6d8530d4", "HanWangT0007");
+	   $youziku.draw();
+	</script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">偉朗的部落格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">摄影爱好者而已</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            所有日志
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhouweilang.com/2018/04/16/引用类型 - Array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="WeiLang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="偉朗的部落格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">引用类型 - Array</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T10:01:04+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="检测数组"><a href="#检测数组" class="headerlink" title="检测数组"></a>检测数组</h4><p>确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 <code>instanceof</code> 操作符就能得到满意的结果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (value <span class="keyword">instanceof</span> <span class="built_in">Array</span>)&#123;</span><br><span class="line">    <span class="comment">//对数组执行某些操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>instanceof</code> 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而存在两个以上不同版本的 Array 构造函数。</p>
+<p>为了解决这个问题，<strong>ECMAScript 5</strong> 新增了<code>Array.isArray()</code>方法。这个方法的目的是最终确定某个值到底是不是数组，而不管它是在哪个全局执行环境中创建的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value))&#123;</span><br><span class="line">    <span class="comment">//对数组执行某些操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持 <code>Array.isArray()</code> 方法的浏览器有 IE9+、Firefox 4+、Safari 5+、Opera 10.5+和 Chrome。<br><a id="more"></a></p>
+<h4 id="转换方法"><a href="#转换方法" class="headerlink" title="转换方法"></a>转换方法</h4><p>所有对象都具有 <code>toLocaleString()</code> 、 <code>toString()</code> 和<code>valueOf()</code>方法。<br>其中，调用数组的<code>toString()</code>方法会返回由数组中每个值的字符串形式拼接而成的一个以逗号分隔的字符串。<br>而调用 <code>valueOf()</code> 返回的还是<strong>数组</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>]; <span class="comment">// 创建一个包含 3 个字符串的数组</span></span><br><span class="line">alert(colors.toString()); <span class="comment">// red,blue,green</span></span><br><span class="line">alert(colors.valueOf()); <span class="comment">// red,blue,green</span></span><br><span class="line">alert(colors); <span class="comment">// red,blue,green</span></span><br></pre></td></tr></table></figure>
+<h4 id="toString-方法与toLocalString-方法区别："><a href="#toString-方法与toLocalString-方法区别：" class="headerlink" title="toString()方法与toLocalString()方法区别："></a>toString()方法与toLocalString()方法区别：</h4><p><code>toString()</code>方法获取的是String(传统字符串),而<code>toLocaleString()</code>方法获取的是LocaleString(本地环境字符串)。 </p>
+<p>当数字是四位及以上时，toLocaleString()会让数字三位一分隔</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=<span class="number">1234</span></span><br><span class="line"></span><br><span class="line">a.toString();   <span class="comment">//"1234"</span></span><br><span class="line">a.toLocaleString();  <span class="comment">//"1,234"</span></span><br></pre></td></tr></table></figure>
+<p>当目标是标准时间格式时，用以上两种方法是有区别的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sd=<span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"></span><br><span class="line">sd.toString();  <span class="comment">//"Wed Feb 15 2017 11:21:31 GMT+0800 (CST)"</span></span><br><span class="line">sd.toLocaleString();    <span class="comment">//"2017/2/15 上午11:21:31"</span></span><br></pre></td></tr></table></figure></p>
+<p>所以使用<code>toString()</code>是保险的，返回唯一值的方法,它不会因为本地环境的改变而发生变化。如果是为了返回时间类型的数据，推荐使用<code>toLocaleString()</code>。若是在后台处理字符串，请务必使用<code>toString()</code>。</p>
+<h4 id="join-方法"><a href="#join-方法" class="headerlink" title="join()方法"></a>join()方法</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>];</span><br><span class="line">alert(colors.join());       <span class="comment">//red,green,blue</span></span><br><span class="line">alert(colors.join(<span class="string">","</span>));    <span class="comment">//red,green,blue</span></span><br><span class="line">alert(colors.join(<span class="string">"||"</span>));   <span class="comment">//red||green||blue</span></span><br></pre></td></tr></table></figure>
+<h4 id="栈方法（push和pop）"><a href="#栈方法（push和pop）" class="headerlink" title="栈方法（push和pop）"></a>栈方法（push和pop）</h4><p>栈是一种 <strong>LIFO</strong>（Last-In-First-Out，后进先出）的数据结构，也就是<strong>最新添加的项最早被移除</strong>。而栈中项的插入（叫做推入）和移除（叫做弹出），只发生在一个位置——栈的顶部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>(); <span class="comment">// 创建一个数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> count = colors.push(<span class="string">"red"</span>, <span class="string">"green"</span>); <span class="comment">// 推入两项</span></span><br><span class="line">alert(count); <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">count = colors.push(<span class="string">"black"</span>); <span class="comment">// 推入另一项</span></span><br><span class="line">alert(count); <span class="comment">//3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> item = colors.pop(); <span class="comment">// 取得最后一项</span></span><br><span class="line">alert(item); <span class="comment">//"black"</span></span><br><span class="line">alert(colors.length); <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+<p> <code>push()</code>返回数组长度，<code>pop()</code>返回数组的最后一项</p>
+<h4 id="队列方法（push和shift）"><a href="#队列方法（push和shift）" class="headerlink" title="队列方法（push和shift）"></a>队列方法（push和shift）</h4><p>栈数据结构的访问规则是 LIFO（后进先出），而队列数据结构的访问规则是<strong>FIFO</strong>（First-In-First-Out，先进先出）。队列在列表的末端添加项，从列表的前端移除项。  </p>
+<p>由于 <code>push()</code> 是向数组末端添加项的方法，因此要模拟队列只需一个从数组前端取得项的方法。实现这一操作的数组方法就是 <code>shift()</code>，它能够移除数组中的第一个项并返回该项，同时将数组长度减 1。  </p>
+<p>ECMAScript 还为数组提供了一个<code>unshift()</code>方法。顾名思义， <code>unshift()</code> 与 <code>shift()</code>的用途相反：它能在数组前端添加任意个项并返回新数组的长度。因此，同时使用<code>unshift()</code> 和 <code>pop()</code> 方法，可以从相反的方向来模拟队列，即在数组的前端添加项，从数组末端移除项。 </p>
+<h4 id="数组排序-sort"><a href="#数组排序-sort" class="headerlink" title="数组排序 sort()"></a>数组排序 <code>sort()</code></h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">     <span class="keyword">return</span> a - b;  <span class="comment">//从小到大排序</span></span><br><span class="line">     <span class="keyword">return</span> b - a;  <span class="comment">//从大到小排序</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="数组倒序-reverse"><a href="#数组倒序-reverse" class="headerlink" title="数组倒序 reverse()"></a>数组倒序 <code>reverse()</code></h4><blockquote>
+<p><code>reverse()</code> 和 <code>sort()</code> 方法的返回值是经过排序之后的数组。</p>
+</blockquote>
+<h4 id="数组拼接-concat"><a href="#数组拼接-concat" class="headerlink" title="数组拼接 concat()"></a>数组拼接 <code>concat()</code></h4><p><code>concat()</code> 方法可以基于当前数组中的所有项创建一个新数组。具体来说，这个方法会先创建当前数组一个副本，然后将接收到的参数添加到这个副本的末尾，最后返回新构建的数组。  </p>
+<p>在没有给 <code>concat()</code> 方法传递参数的情况下，它只是复制当前数组并返回<strong>副本</strong>。如果传递给<code>concat()</code> 方法的是一或多个数组，则该方法会将这些数组中的每一项都添加到结果数组中。如果传递的值不是数组，这些值就会被简单地添加到结果数组的末尾。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>];</span><br><span class="line"><span class="keyword">var</span> colors2 = colors.concat(<span class="string">"yellow"</span>, [<span class="string">"black"</span>, <span class="string">"brown"</span>]);</span><br><span class="line">alert(colors); <span class="comment">//red,green,blue</span></span><br><span class="line">alert(colors2); <span class="comment">//red,green,blue,yellow,black,brown</span></span><br></pre></td></tr></table></figure>
+<h4 id="slice"><a href="#slice" class="headerlink" title="slice()"></a>slice()</h4><p>能够基于当前数组中的一或多个项创建一个新数组。 <code>slice()</code>方法可以接受一或两个参数，即要返回项的起始和结束位置。<br>在只有一个参数的情况下，<code>slice()</code> 方法返回从该参数指定位置开始到当前数组末尾的所有项。<br>如果有两个参数，该方法返回起始和结束位置之间的项——但不包括结束位置的项。  </p>
+<p>注意，<strong><code>slice()</code>方法不会影响原始数组</strong>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>, <span class="string">"yellow"</span>, <span class="string">"purple"</span>];</span><br><span class="line"><span class="keyword">var</span> colors2 = colors.slice(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> colors3 = colors.slice(<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">alert(colors2); <span class="comment">//green,blue,yellow,purple</span></span><br><span class="line">alert(colors3); <span class="comment">//green,blue,yellow</span></span><br></pre></td></tr></table></figure>
+<h4 id="splice"><a href="#splice" class="headerlink" title="splice()"></a>splice()</h4><p>splice() 的主要用途是向数组的中部插入项，始终都会返回一个数组，该数组中包含从原始数组中删除的项（如果没有删除任何项，则返回一个空数组）。</p>
+<ul>
+<li>删除，只需指定 2 个参数：要删除的第一项的位置和要删除的项数。</li>
+<li>插入，只需提供 3 个参数：起始位置、0（要删除的项数）和要插入的项。</li>
+<li>替换，只需指定 3 个参数：起始位置、要删除的项数和要插入的任意数量的项。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> removed = colors.splice(<span class="number">0</span>,<span class="number">1</span>); <span class="comment">// 删除第一项</span></span><br><span class="line">alert(colors); <span class="comment">// green,blue</span></span><br><span class="line">alert(removed); <span class="comment">// red，返回的数组中只包含一项</span></span><br><span class="line"></span><br><span class="line">removed = colors.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">"yellow"</span>, <span class="string">"orange"</span>); <span class="comment">// 从位置 1 开始插入两项</span></span><br><span class="line">alert(colors); <span class="comment">// green,yellow,orange,blue</span></span><br><span class="line">alert(removed); <span class="comment">// 返回的是一个空数组</span></span><br><span class="line"></span><br><span class="line">removed = colors.splice(<span class="number">1</span>, <span class="number">1</span>, <span class="string">"red"</span>, <span class="string">"purple"</span>); <span class="comment">// 插入两项，删除一项</span></span><br><span class="line">alert(colors); <span class="comment">// green,red,purple,orange,blue</span></span><br><span class="line">alert(removed); <span class="comment">// yellow，返回的数组中只包含一项</span></span><br></pre></td></tr></table></figure>
+<h4 id="位置方法-indexOf"><a href="#位置方法-indexOf" class="headerlink" title="位置方法 indexOf()"></a>位置方法 <code>indexOf()</code></h4><p> <code>indexOf()</code> 方法从数组的开头（位置 0）开始向后查找<br> <code>lastIndexOf()</code>方法则从数组的末尾开始向前查找。  </p>
+<p> 这两个方法都返回要查找的项在数组中的位置，或者<strong>在没找到的情况下返回-1</strong>。在比较第一个参数与数组中的每一项时，会使用<strong>全等操作符</strong>；也就是说，要求查找的项必须严格相等（就像使用===一样）。</p>
+<h4 id="ECMAScript-5-迭代方法"><a href="#ECMAScript-5-迭代方法" class="headerlink" title="ECMAScript 5 迭代方法"></a>ECMAScript 5 迭代方法</h4><p>传入这些方法中的函数会接收三个参数：数组项的值、该项在数组中的位置和数组对象本身。   </p>
+<ul>
+<li>every()</li>
+<li>some()</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> everyResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(everyResult); <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> someResult = numbers.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(someResult); <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>filter()</li>
+</ul>
+<p>例如要返回一个所有数值都大于 2 的数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> filterResult = numbers.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(filterResult); <span class="comment">//[3,4,5,4,3]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>map()  </li>
+</ul>
+<p>例如，可以给数组中的每一项乘以 2，然后返回这些乘积组成的数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mapResult = numbers.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item * <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br><span class="line">alert(mapResult); <span class="comment">//[2,4,6,8,10,8,6,4,2]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>forEach()  </li>
+</ul>
+<p>对数组中的每一项运行传入的函数。这个方法没有返回值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">numbers.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//执行某些操作</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="ECMAScript-5-归并方法reduce"><a href="#ECMAScript-5-归并方法reduce" class="headerlink" title="ECMAScript 5 归并方法reduce()"></a>ECMAScript 5 归并方法<code>reduce()</code></h4><p>这两个方法都会迭代数组的所有项，然后构建一个最终返回的值。其中， <code>reduce()</code>方法从数组的第一项开始，逐个遍历到最后。而 <code>reduceRight()</code>则从数组的最后一项开始，向前遍历到第一项。  </p>
+<p>接收 4 个参数：<code>前一个值</code>、<code>当前值</code>、<code>项的索引</code>和<code>数组对象</code>。  </p>
+<p>使用 <code>reduce()</code> 方法可以执行求数组中所有值之和的操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sum = values.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">prev, cur, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> prev + cur;</span><br><span class="line">&#125;);</span><br><span class="line">alert(sum); <span class="comment">//15</span></span><br></pre></td></tr></table></figure>
+<p>第一次执行回调函数， prev 是 1， cur 是 2。第二次， prev 是 3（1 加 2 的结果）， cur是 3（数组的第三项）。这个过程会持续到把数组中的每一项都访问一遍，最后返回结果。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/变量、作用域/" rel="next" title="变量、作用域">
+                <i class="fa fa-chevron-left"></i> 变量、作用域
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="WeiLang" />
+            
+              <p class="site-author-name" itemprop="name">WeiLang</p>
+              <p class="site-description motion-element" itemprop="description">广东90后，深圳前端工作者</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/weilang1994" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/lang1994" target="_blank" title="微 博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微 博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#检测数组"><span class="nav-number">1.</span> <span class="nav-text">检测数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转换方法"><span class="nav-number">2.</span> <span class="nav-text">转换方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toString-方法与toLocalString-方法区别："><span class="nav-number">3.</span> <span class="nav-text">toString()方法与toLocalString()方法区别：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#join-方法"><span class="nav-number">4.</span> <span class="nav-text">join()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栈方法（push和pop）"><span class="nav-number">5.</span> <span class="nav-text">栈方法（push和pop）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列方法（push和shift）"><span class="nav-number">6.</span> <span class="nav-text">队列方法（push和shift）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组排序-sort"><span class="nav-number">7.</span> <span class="nav-text">数组排序 sort()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组倒序-reverse"><span class="nav-number">8.</span> <span class="nav-text">数组倒序 reverse()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数组拼接-concat"><span class="nav-number">9.</span> <span class="nav-text">数组拼接 concat()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#slice"><span class="nav-number">10.</span> <span class="nav-text">slice()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#splice"><span class="nav-number">11.</span> <span class="nav-text">splice()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位置方法-indexOf"><span class="nav-number">12.</span> <span class="nav-text">位置方法 indexOf()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ECMAScript-5-迭代方法"><span class="nav-number">13.</span> <span class="nav-text">ECMAScript 5 迭代方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ECMAScript-5-归并方法reduce"><span class="nav-number">14.</span> <span class="nav-text">ECMAScript 5 归并方法reduce()</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+		
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WeiLang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
