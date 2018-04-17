@@ -105,7 +105,7 @@
 <meta property="og:site_name" content="偉朗的部落格">
 <meta property="og:description" content="检测数组确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 instanceof 操作符就能得到满意的结果 123if (value instanceof Array)&amp;#123;    //对数组执行某些操作&amp;#125; instanceof 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-16T02:06:30.976Z">
+<meta property="og:updated_time" content="2018-04-16T13:21:19.468Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="引用类型 - Array">
 <meta name="twitter:description" content="检测数组确定某个对象是不是数组，对于一个网页，或者一个全局作用域而言（没有其他frame），使用 instanceof 操作符就能得到满意的结果 123if (value instanceof Array)&amp;#123;    //对数组执行某些操作&amp;#125; instanceof 操作符的问题在于，它假定只有一个全局执行环境。如果网页中包含多个框架，那实际上就存在两个以上不同的全局执行环境，从而">
@@ -417,6 +417,8 @@
 </ul>
 <p>例如要返回一个所有数值都大于 2 的数组</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> filterResult = numbers.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (item &gt; <span class="number">2</span>);</span><br><span class="line">&#125;);</span><br><span class="line">alert(filterResult); <span class="comment">//[3,4,5,4,3]</span></span><br></pre></td></tr></table></figure>
+<p>利用filter，可以巧妙地去除Array的重复元素：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr.filter(<span class="function"><span class="keyword">function</span> (<span class="params">element, index, self</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> self.indexOf(element) === index;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>去除重复元素依靠的是indexOf总是返回第一个元素的位置，后续的重复元素位置与indexOf返回的位置不相等，因此被filter滤掉了。</p>
 <ul>
 <li>map()  </li>
 </ul>
@@ -465,6 +467,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/闭包和this/" rel="prev" title="闭包和this">
+                闭包和this <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -545,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
